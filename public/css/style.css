@@ -7,11 +7,13 @@
     resize: none;
     outline: none;
     font-family: 'Roboto', sans-serif;
+    user-select: none;
 }
 
 .container {
     max-width: 1440px;
     margin: 0 auto;
+    padding: 0 10px;
 }
 
 .v-form {
@@ -24,12 +26,14 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: relative;
 }
 
 .v-form__block {
     text-align: center;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .v-form__heading {
@@ -57,6 +61,92 @@
     border-radius: 3px;
 }
 
+.v-form__settings {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+
+.v-form__settings-quiz {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    border-radius: 3px;
+    visibility: hidden;
+    padding: 10px;
+}
+
+.v-form__settings-quiz-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.v-form__settings-quiz-form .v-form__block {
+    border: 1px solid #c2c2c2;
+    border-radius: 3px;
+    padding: 10px;
+    display: block;
+}
+
+.v-form__block-item label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.v-form__block-item-radio {
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    position: absolute;
+}
+
+.v-form__block-item-radio:checked+.v-form__block-item-radio-style::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: #282C34;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
+
+.v-form__block-item-radio-style {
+    margin-right: 20px;
+    display: block;
+    position: relative;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #282C34;
+    cursor: pointer;
+}
+
+.v-form__block-item-color {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #c2c2c2;
+    border-radius: 3px;
+}
+
+.v-form__colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 .v-quiz-list {
     display: flex;
     flex-direction: column;
@@ -69,11 +159,9 @@
     border: 1px solid #c2c2c2;
     border-radius: 3px;
     padding: 10px;
-    background-color: #fff;
 }
 
 .v-quiz__heading {
-    color: #626886;
     font-size: 15px;
 }
 
@@ -88,7 +176,7 @@
 }
 
 .v-quiz__response-line {
-    height: 30px;
+    height: 35px;
     background-color: #F2F3F7;
     border-radius: 3px;
     position: relative;
@@ -97,7 +185,6 @@
 
 .v-quiz__response-line-item {
     height: 100%;
-    background-color: #D9E0EA;
     border-radius: 3px;
     top: 0;
     left: 0;
@@ -114,9 +201,12 @@
     bottom: 0;
     top: 0;
     margin: auto 0;
-    color: #7890AE;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 999;
+}
+
+.show {
+    visibility: visible;
 }
