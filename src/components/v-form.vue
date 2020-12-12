@@ -14,7 +14,7 @@
         </div>
         <input class="v-form__btn v-form__submit" type="submit" value="Создать опрос">
         <div class="v-form__settings-quiz" :class="{ 'show': show }">
-            <form class="v-form__settings-quiz-form" v-on:submit.prevent="selectQuizBgColor">
+            <form class="v-form__settings-quiz-form" v-on:submit.prevent="selectQuizTheme">
                 <div class="v-form__block">
                     <div class="v-form__heading">Цветная тема для опроса</div>
                     <ul class="v-form__colors">
@@ -23,6 +23,17 @@
                                 <input class="v-form__block-item-radio" type="radio" name="bg-quiz" :data-color-procent="bg.colorProcent" :data-color-line="bg.colorLine" :data-color="bg.color" :data-color-heading="bg.colorHeading" :checked="bg.checked" :id="`bg-quiz-${index}`">
                                 <span class="v-form__block-item-radio-style"></span>
                                 <div class="v-form__block-item-color" :style="`background-color: ${bg.color};`"></div>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="v-form__block">
+                    <div class="v-form__heading">Дополнительные настройки</div>
+                    <ul class="v-form__list-settings">
+                        <li v-for="(opt, i) of settings" :key="i" class="v-form__settings-option">
+                            <label :for="`option-${i}`">
+                                <input class="v-form__checkbox" type="checkbox" :data-settings="opt.option" :id="`option-${i}`" :checked="opt.checked">
+                                <h4>{{ opt.title }}</h4>
                             </label>
                         </li>
                     </ul>
@@ -50,6 +61,10 @@ export default {
                 { color: '#FFC432', colorHeading: '#000', colorLine: '#FFE298', colorProcent: '#000' },
                 { color: '#FDA0FF', colorHeading: '#000', colorLine: '#FED6FF', colorProcent: '#000' },
                 { color: '#008080', colorHeading: '#000', colorLine: '#009B9B', colorProcent: '#000' }
+            ],
+            settings: [
+                { title: 'Показать голоса у ответов', checked: true, option: 'showVotesAtResponse' },
+                { title: 'Показать сколько всего проголосовало', checked: true, option: 'showTotalVotes' }
             ]
         }
     },
@@ -57,7 +72,8 @@ export default {
         createQuiz() {
             const responses = document.querySelectorAll('.v-form__response');
             const bgColor = document.querySelectorAll('.v-form__block-item-radio');
-            const response = {
+            const options = document.querySelectorAll('.v-form__checkbox[data-settings]');
+            const quiz = {
                 title: this.title,
                 total: 0,
                 responses: [],
@@ -65,7 +81,9 @@ export default {
                 bgColor: bgColor[0].dataset.color,
                 colorHeading: bgColor[0].dataset.colorHeading,
                 colorLine: bgColor[0].dataset.colorLine,
-                colorProcent: bgColor[0].dataset.colorProcent
+                colorProcent: bgColor[0].dataset.colorProcent,
+                showTotalVotes: true,
+                showVotesAtResponse: true
             };
 
             responses.forEach(item => {
@@ -75,26 +93,37 @@ export default {
                     procent: '0%'
                 }
 
-                response.responses.push(obj);
+                quiz.responses.push(obj);
             });
 
             bgColor.forEach(color => {
                 if (color.checked) {
-                    response.bgColor = color.dataset.color;
-                    response.colorHeading = color.dataset.colorHeading;
-                    response.colorLine = color.dataset.colorLine;
-                    response.colorProcent = color.dataset.colorProcent;
+                    quiz.bgColor = color.dataset.color;
+                    quiz.colorHeading = color.dataset.colorHeading;
+                    quiz.colorLine = color.dataset.colorLine;
+                    quiz.colorProcent = color.dataset.colorProcent;
                 }
             });
 
-            this.$store.dispatch('addQuiz', response);
+            options.forEach(option => {
+                const data = option.dataset.settings;
+
+                for (let item in quiz) {
+                    if (item === data) {
+                        quiz[item] = option.checked ?  true : false;
+                    }
+                }
+            });
+
+            this.$store.dispatch('addQuiz', quiz);
 
             responses.forEach(item => item.value = '');
+            options.forEach(item => item.checked = true);
             this.title = '';
             this.responses = [0, 0];
             bgColor[0].checked = true;
         },
-        selectQuizBgColor() {
+        selectQuizTheme() {
             this.show = false;
         },
         addRes() {
@@ -102,4 +131,4 @@ export default {
         }
     }
 }
-</script>
+</script> 

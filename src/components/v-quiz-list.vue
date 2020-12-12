@@ -1,7 +1,7 @@
 <template>
     <ul class="v-quiz-list">
         <vForm />
-        <vQuiz v-for="(item, i) of getQuizs" :key="i" :quiz="item" v-on:vote="vote" />
+        <vQuiz v-for="(item, i) of getQuizs" :key="i" :quiz="item" v-on:vote="vote" v-on:removeQuiz="removeQuiz" />
     </ul>
 </template>
 
@@ -33,6 +33,9 @@ export default {
             });
 
             localStorage.setItem('quizs', JSON.stringify(this.$store.state.quizs));
+        },
+        removeQuiz(quiz) {
+            this.$store.dispatch('removeQuiz', quiz);
         }
     }
 }
