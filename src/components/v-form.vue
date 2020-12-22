@@ -1,7 +1,7 @@
 <template>
     <form v-on:submit.prevent="createQuiz" class="v-form">
         <div class="v-form__block">
-            <img class="v-form__settings" :src="require('../assets/settings.svg')" v-on:click="show = true" alt="settings">
+            <span class="v-form__settings" v-on:click="show = true">Настройки</span>
         </div>
         <div class="v-form__block">
             <label class="v-form__heading" for="title">Заголовок опроса</label>
